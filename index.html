@@ -625,8 +625,7 @@
 <canvas class="particles" id="particles"></canvas>
 <div class="watermark">支</div>
 
-<a href="https://bellaproject.github.io/yesru1314/" class="back-btn" title="Volver al inicio">←</a>
-<button class="config-btn" id="btnConfig" title="Configurar Sheets">⚙</button>
+<a href="https://ihgbellai-a11y.github.io/yesru1314/" class="back-btn" title="Volver al inicio">←</a>
 
 <div class="container">
   <header>
@@ -708,21 +707,6 @@
     <div class="footer-jp">永遠にあなたのもの</div>
     <button class="reset-btn" id="btnReset">Reiniciar día</button>
   </footer>
-</div>
-
-<div class="modal-overlay" id="configModal">
-  <div class="modal">
-    <div class="modal-title">設定 · Sheets</div>
-    <label>URL del Apps Script</label>
-    <input type="url" id="sheetUrl" placeholder="https://script.google.com/.../exec" autocomplete="off">
-    <label>Nombre del dispositivo</label>
-    <input type="text" id="deviceName" placeholder="Ej: iPhone" autocomplete="off">
-    <div class="modal-hint">Pega aquí la misma URL del Apps Script unificado. Las rachas y registros se sincronizarán entre dispositivos.</div>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" id="btnCancelConfig">Cancelar</button>
-      <button class="btn btn-primary" id="btnSaveConfig">Guardar</button>
-    </div>
-  </div>
 </div>
 
 <div class="toast" id="toast">—</div>
@@ -1081,10 +1065,6 @@ renderCategories();
 setDailyRitual();
 
 /* === SINCRONIZACIÓN SHEETS === */
-const $btnConfig = document.getElementById('btnConfig');
-const $modal = document.getElementById('configModal');
-const $sheetUrlInput = document.getElementById('sheetUrl');
-const $deviceNameInput = document.getElementById('deviceName');
 const $rachasPanel = document.getElementById('rachasPanel');
 const $toast = document.getElementById('toast');
 
@@ -1097,40 +1077,11 @@ function showToast(text, type) {
 
 function updateConnectionUI() {
   if (sheetUrl) {
-    $btnConfig.classList.add('synced');
     $rachasPanel.style.display = 'block';
   } else {
-    $btnConfig.classList.remove('synced');
     $rachasPanel.style.display = 'none';
   }
 }
-
-$btnConfig.addEventListener('click', () => {
-  $sheetUrlInput.value = sheetUrl;
-  $deviceNameInput.value = deviceName !== 'dispositivo' ? deviceName : '';
-  $modal.classList.add('show');
-});
-
-document.getElementById('btnCancelConfig').addEventListener('click', () => {
-  $modal.classList.remove('show');
-});
-
-document.getElementById('btnSaveConfig').addEventListener('click', async () => {
-  const url = $sheetUrlInput.value.trim();
-  const name = $deviceNameInput.value.trim() || 'dispositivo';
-  if (!url || !url.includes('script.google.com')) {
-    alert('Pega una URL válida del Apps Script.');
-    return;
-  }
-  sheetUrl = url;
-  deviceName = name;
-  localStorage.setItem(SHEET_URL_KEY, url);
-  localStorage.setItem(DEVICE_KEY, name);
-  $modal.classList.remove('show');
-  showToast('Conectando...');
-  await fetchRemote();
-  flushQueue();
-});
 
 async function fetchRemote() {
   if (!sheetUrl) return;
