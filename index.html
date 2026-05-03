@@ -440,6 +440,14 @@
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
+    .category-btn.completed {
+      background: linear-gradient(145deg, rgba(212,175,55,0.08), var(--bg-2));
+      border-color: rgba(212,175,55,0.4);
+    }
+    .category-btn.completed .cat-count {
+      color: var(--gold);
+      font-weight: 600;
+    }
     .cat-kanji {
       font-family: 'Noto Serif JP', serif;
       font-size: 1.5rem;
@@ -838,15 +846,19 @@ function renderCategories() {
     wrap.className = 'category';
     wrap.dataset.cat = cat.id;
 
+    // Calcular cuántos están marcados hoy en esta categoría
+    const marcados = Object.keys(honored.items).filter(id => id.startsWith(cat.id + '-')).length;
+    const completa = marcados === cat.rituals.length;
+
     const btn = document.createElement('button');
-    btn.className = 'category-btn';
+    btn.className = 'category-btn' + (completa ? ' completed' : '');
     btn.innerHTML = `
       <div class="cat-kanji">${cat.kanji}</div>
       <div class="cat-text">
         <div class="cat-romaji">${cat.romaji}</div>
         <div class="cat-name">${cat.name}</div>
       </div>
-      <div class="cat-count">${cat.rituals.length}</div>
+      <div class="cat-count">${marcados}/${cat.rituals.length}${completa ? ' ✓' : ''}</div>
       <div class="cat-arrow">▼</div>
     `;
     btn.addEventListener('click', () => toggleCategory(wrap));
@@ -900,6 +912,7 @@ function toggleHonored(id, ritual) {
   }
   localStorage.setItem('shihai_honored', JSON.stringify(honored));
   updateStats();
+  updateCategoryProgress(id);
 
   // Sincronizar con Sheets
   if (sheetUrl) {
@@ -907,6 +920,7 @@ function toggleHonored(id, ritual) {
     const cat = categories.find(c => c.id === catId);
     if (cat) {
       const ritualData = cat.rituals[parseInt(ritualIdx)];
+      const marcadosEnCategoria = Object.keys(honored.items).filter(itemId => itemId.startsWith(catId + '-')).length;
       queueAction({
         tipo: 'shihai',
         accion: wasHonored ? 'desmarcar' : 'marcar',
@@ -914,9 +928,54 @@ function toggleHonored(id, ritual) {
         categoriaNombre: cat.name,
         ritualId: id,
         ritualNombre: ritualData ? ritualData.t : '',
-        dispositivo: deviceName
+        dispositivo: deviceName,
+        totalEnCategoria: cat.rituals.length,
+        marcadosEnCategoria: marcadosEnCategoria
       });
       flushQueue();
+
+      if (!wasHonored && marcadosEnCategoria === cat.rituals.length) {
+        celebrateCategory(cat);
+      }
+    }
+  }
+}
+
+function updateCategoryProgress(ritualId) {
+  // Actualiza el "X/10" del botón de categoría sin re-renderizar todo
+  const catId = ritualId.split('-')[0];
+  const cat = categories.find(c => c.id === catId);
+  if (!cat) return;
+  const marcados = Object.keys(honored.items).filter(id => id.startsWith(cat.id + '-')).length;
+  const completa = marcados === cat.rituals.length;
+  const wrap = document.querySelector(`.category[data-cat="${catId}"]`);
+  if (!wrap) return;
+  const btn = wrap.querySelector('.category-btn');
+  const countEl = wrap.querySelector('.cat-count');
+  if (countEl) countEl.textContent = `${marcados}/${cat.rituals.length}${completa ? ' ✓' : ''}`;
+  if (btn) btn.classList.toggle('completed', completa);
+}
+
+function celebrateCategory(cat) {
+  showToast(`✨ ${cat.kanji} ${cat.name} completada · racha +1`);
+  // Pulso visual en el panel de rachas
+  const map = {
+    'Presencia': 'rachaPresencia',
+    'Servicio': 'rachaServicio',
+    'Finanzas': 'rachaFinanzas',
+    'Cuerpo': 'rachaCuerpo'
+  };
+  const elId = map[cat.name];
+  if (elId) {
+    const el = document.getElementById(elId);
+    if (el) {
+      el.style.transition = 'transform 0.4s, color 0.4s';
+      el.style.transform = 'scale(1.4)';
+      el.style.color = 'var(--gold)';
+      setTimeout(() => {
+        el.style.transform = 'scale(1)';
+        el.style.color = '';
+      }, 600);
     }
   }
 }
