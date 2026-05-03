@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>支配 — Shihai · Rituales</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="支配">
+  <meta name="theme-color" content="#08080a">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23080808'/><text x='90' y='130' font-family='serif' font-size='110' font-weight='300' fill='%23d4af37' text-anchor='middle'>支</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #08080a;
+      --bg-2: #0d0d10;
+      --bg-3: #14141a;
+      --gold: #d4af37;
+      --gold-soft: #e8c870;
+      --gold-deep: #8b6914;
+      --bone: #f5f5f0;
+      --bone-soft: #b5b5a8;
+      --crimson: #6b0a0a;
+      --teal: #5eead4;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+    body, body * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    input, textarea {
+      -webkit-user-select: text !important;
+      user-select: text !important;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--bone);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(212,175,55,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(107,10,10,0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+    .watermark {
+      position: fixed; right: -20px; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Noto Serif JP', serif;
+      font-size: 14rem; font-weight: 200;
+      color: rgba(212,175,55,0.025);
+      writing-mode: vertical-rl;
+      letter-spacing: -10px;
+      pointer-events: none; z-index: 0; user-select: none;
+    }
+    .container {
+      position: relative; z-index: 10;
+      max-width: 520px; margin: 0 auto;
+      padding: 50px 22px 40px;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 18px; left: 18px;
+      width: 38px; height: 38px;
+      background: rgba(20,20,26,0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: 50%;
+      color: var(--gold-deep);
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      z-index: 100;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .back-btn:active {
+      background: rgba(212,175,55,0.15);
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+    .config-btn {
+      position: fixed;
+      top: 18px; right: 18px;
+      width: 38px; height: 38px;
+      background: rgba(20,20,26,0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: 50%;
+      color: var(--gold-deep);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 100;
+    }
+    .config-btn:active {
+      background: rgba(212,175,55,0.15);
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+    .config-btn.synced { color: var(--teal); border-color: rgba(94,234,212,0.4); }
+
+    /* Panel rachas */
+    .rachas-panel {
+      background: linear-gradient(145deg, rgba(94,234,212,0.04), var(--bg-2));
+      border: 1px solid rgba(94,234,212,0.15);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 22px;
+      animation: fadeInUp 1s ease 0.25s both;
+    }
+    .rachas-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.6rem;
+      color: var(--teal);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .rachas-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .racha-cell {
+      text-align: center;
+      padding: 8px 4px;
+    }
+    .racha-cat {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .racha-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--teal);
+      font-weight: 400;
+      line-height: 1;
+    }
+    .racha-label {
+      font-size: 0.5rem;
+      color: var(--gold-deep);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+    .racha-max {
+      font-size: 0.55rem;
+      color: var(--bone-soft);
+      margin-top: 2px;
+      opacity: 0.7;
+    }
+
+    /* Modal config */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(5,5,8,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+    .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+    .modal {
+      background: linear-gradient(145deg, var(--bg-3), var(--bg-2));
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 10px;
+      padding: 28px 24px;
+      max-width: 420px;
+      width: 100%;
+    }
+    .modal-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      letter-spacing: 3px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .modal label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .modal input {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      color: var(--bone);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      -webkit-user-select: text !important;
+      user-select: text !important;
+    }
+    .modal input:focus { outline: none; border-color: var(--gold); }
+    .modal-hint {
+      font-size: 0.65rem;
+      color: var(--bone-soft);
+      opacity: 0.7;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .modal-actions { display: flex; gap: 10px; }
+    .btn {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      border-radius: 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-primary { background: var(--gold); color: var(--bg); }
+    .btn-secondary { background: rgba(255,255,255,0.05); color: var(--bone-soft); border: 1px solid rgba(255,255,255,0.08); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: linear-gradient(145deg, var(--bg-3), var(--bg-2));
+      border: 1px solid var(--teal);
+      border-radius: 6px;
+      padding: 11px 20px;
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      color: var(--teal);
+      z-index: 300;
+      transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.error { border-color: var(--crimson); color: #ff8888; }
+
+    /* HEADER */
+    header { text-align: center; margin-bottom: 32px; animation: fadeInDown 1s ease; }
+    .kanji-main {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 300;
+      font-size: 3.2rem;
+      color: var(--gold);
+      letter-spacing: 14px;
+      padding-left: 14px;
+      margin-bottom: 14px;
+      text-shadow: 0 0 40px rgba(212,175,55,0.35);
+      line-height: 1;
+    }
+    .romaji {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--gold-deep);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      font-size: 0.65rem;
+      color: var(--gold-deep);
+      letter-spacing: 4px;
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
+    .header-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(180deg, transparent, var(--gold), transparent);
+      margin: 24px auto;
+    }
+
+    /* RITUAL DEL DÍA */
+    .daily-ritual {
+      background: linear-gradient(145deg, rgba(212,175,55,0.06), var(--bg-2));
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 8px;
+      padding: 22px 22px;
+      margin-bottom: 24px;
+      text-align: center;
+      position: relative;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    .daily-ritual::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .daily-label {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.6rem;
+      color: var(--gold);
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .daily-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--bone);
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+    .daily-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--bone-soft);
+      line-height: 1.5;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 22px;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+    .stat {
+      background: linear-gradient(145deg, var(--bg-3), var(--bg-2));
+      border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 6px;
+      padding: 12px 4px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.55rem;
+      color: var(--gold-deep);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      margin-bottom: 22px;
+      position: relative;
+      animation: fadeInUp 1s ease 0.4s both;
+    }
+    .search {
+      width: 100%;
+      padding: 14px 16px 14px 42px;
+      background: linear-gradient(145deg, var(--bg-3), var(--bg-2));
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: 6px;
+      color: var(--bone);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      -webkit-user-select: text;
+      user-select: text;
+    }
+    .search:focus { outline: none; border-color: var(--gold); }
+    .search-icon {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold-deep);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    /* CATEGORÍAS */
+    .menu-grid { display: flex; flex-direction: column; gap: 10px; }
+
+    .category {
+      animation: fadeInUp 0.6s ease both;
+    }
+    .category:nth-child(1) { animation-delay: 0.5s; }
+    .category:nth-child(2) { animation-delay: 0.6s; }
+    .category:nth-child(3) { animation-delay: 0.7s; }
+    .category:nth-child(4) { animation-delay: 0.8s; }
+
+    .category-btn {
+      background: linear-gradient(145deg, var(--bg-3), var(--bg-2));
+      border: 1px solid rgba(212,175,55,0.18);
+      border-radius: 6px;
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+      text-align: left;
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      color: var(--bone);
+      font-family: inherit;
+    }
+    .category-btn:hover, .category-btn:active {
+      border-color: var(--gold);
+      box-shadow: -8px 0 20px -10px rgba(212,175,55,0.3);
+    }
+    .category.open .category-btn {
+      border-color: var(--gold);
+      border-bottom-color: rgba(212,175,55,0.3);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .cat-kanji {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      line-height: 1;
+      min-width: 30px;
+    }
+    .cat-text { display: flex; flex-direction: column; gap: 3px; }
+    .cat-romaji {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.62rem;
+      color: var(--gold-deep);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .cat-name {
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--bone);
+    }
+    .cat-count {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--gold-deep);
+    }
+    .cat-arrow {
+      color: var(--gold-deep);
+      font-size: 0.8rem;
+      transition: transform 0.4s;
+    }
+    .category.open .cat-arrow { transform: rotate(180deg); color: var(--gold); }
+
+    .ritual-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1);
+      background: var(--bg-2);
+      border-left: 1px solid var(--gold);
+      border-right: 1px solid var(--gold);
+      border-bottom: 1px solid var(--gold);
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+    .category.open .ritual-list { max-height: 3000px; }
+
+    .ritual {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(212,175,55,0.08);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: start;
+      transition: background 0.3s;
+    }
+    .ritual:last-child { border-bottom: none; }
+    .ritual:hover { background: rgba(212,175,55,0.02); }
+    .ritual.honored { background: rgba(94,234,212,0.04); }
+    .ritual.hidden-by-search { display: none; }
+
+    .ritual-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--gold);
+      line-height: 1;
+      min-width: 24px;
+    }
+    .ritual-content { text-align: left; }
+    .ritual-title {
+      font-size: 0.78rem;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 5px;
+      font-weight: 400;
+    }
+    .ritual-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      color: var(--bone-soft);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .check {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1px solid rgba(212,175,55,0.3);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: transparent;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 4px;
+    }
+    .ritual.honored .check {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: var(--bg);
+    }
+
+    /* No results */
+    .no-results {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--bone-soft);
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .no-results.show { display: block; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+    }
+    .ornament {
+      width: 100px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 24px;
+    }
+    .footer-text {
+      font-size: 0.6rem;
+      color: var(--gold-deep);
+      letter-spacing: 4px;
+      line-height: 2;
+      text-transform: uppercase;
+    }
+    .footer-jp {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 4px;
+      margin-top: 8px;
+    }
+    .reset-btn {
+      margin-top: 14px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--bone-soft);
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .reset-btn:active { border-color: var(--crimson); color: #ff8888; }
+
+    @keyframes fadeInDown { from { opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+
+    @media (max-width: 480px) {
+      .kanji-main { font-size: 2.6rem; letter-spacing: 10px; }
+      .stat-num { font-size: 1.2rem; }
+      .stat-label { font-size: 0.5rem; }
+      .ritual { padding: 14px 16px; gap: 12px; }
+      .watermark { font-size: 10rem; }
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+
+<canvas class="particles" id="particles"></canvas>
+<div class="watermark">支</div>
+
+<a href="https://bellaproject.github.io/yesru1314/" class="back-btn" title="Volver al inicio">←</a>
+<button class="config-btn" id="btnConfig" title="Configurar Sheets">⚙</button>
+
+<div class="container">
+  <header>
+    <h1 class="kanji-main">支配</h1>
+    <p class="romaji">Shihai</p>
+    <p class="subtitle">Registro de órdenes</p>
+    <div class="header-line"></div>
+  </header>
+
+  <div class="daily-ritual" id="dailyRitual">
+    <div class="daily-label">今日の儀式 · Ritual del día</div>
+    <div class="daily-name" id="dailyName">—</div>
+    <div class="daily-text" id="dailyText">—</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-label">Hoy</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="statPresence">0</div>
+      <div class="stat-label">存在</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="statService">0</div>
+      <div class="stat-label">奉仕</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="statBody">0</div>
+      <div class="stat-label">身体</div>
+    </div>
+  </div>
+
+  <div class="rachas-panel" id="rachasPanel" style="display:none">
+    <div class="rachas-title">連続 · Rachas por categoría</div>
+    <div class="rachas-grid">
+      <div class="racha-cell">
+        <div class="racha-cat">存</div>
+        <div class="racha-num" id="rachaPresencia">0</div>
+        <div class="racha-label">Presencia</div>
+        <div class="racha-max" id="rachaMaxPresencia">máx 0</div>
+      </div>
+      <div class="racha-cell">
+        <div class="racha-cat">奉</div>
+        <div class="racha-num" id="rachaServicio">0</div>
+        <div class="racha-label">Servicio</div>
+        <div class="racha-max" id="rachaMaxServicio">máx 0</div>
+      </div>
+      <div class="racha-cell">
+        <div class="racha-cat">財</div>
+        <div class="racha-num" id="rachaFinanzas">0</div>
+        <div class="racha-label">Finanzas</div>
+        <div class="racha-max" id="rachaMaxFinanzas">máx 0</div>
+      </div>
+      <div class="racha-cell">
+        <div class="racha-cat">身</div>
+        <div class="racha-num" id="rachaCuerpo">0</div>
+        <div class="racha-label">Cuerpo</div>
+        <div class="racha-max" id="rachaMaxCuerpo">máx 0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="search" class="search" id="search" placeholder="Buscar ritual..." autocomplete="off">
+  </div>
+
+  <div class="menu-grid" id="menuGrid"></div>
+
+  <div class="no-results" id="noResults">
+    « Ningún ritual encontrado »
+  </div>
+
+  <footer>
+    <div class="ornament"></div>
+    <div class="footer-text">Tu voluntad es mi única ley</div>
+    <div class="footer-jp">永遠にあなたのもの</div>
+    <button class="reset-btn" id="btnReset">Reiniciar día</button>
+  </footer>
+</div>
+
+<div class="modal-overlay" id="configModal">
+  <div class="modal">
+    <div class="modal-title">設定 · Sheets</div>
+    <label>URL del Apps Script</label>
+    <input type="url" id="sheetUrl" placeholder="https://script.google.com/.../exec" autocomplete="off">
+    <label>Nombre del dispositivo</label>
+    <input type="text" id="deviceName" placeholder="Ej: iPhone" autocomplete="off">
+    <div class="modal-hint">Pega aquí la misma URL del Apps Script unificado. Las rachas y registros se sincronizarán entre dispositivos.</div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="btnCancelConfig">Cancelar</button>
+      <button class="btn btn-primary" id="btnSaveConfig">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">—</div>
+
+<script>
+/* === PROTECCIONES === */
+document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12') { e.preventDefault(); return false; }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && /^[IiJjCc]$/.test(e.key)) { e.preventDefault(); return false; }
+  if ((e.ctrlKey || e.metaKey) && /^[UuSs]$/.test(e.key)) { e.preventDefault(); return false; }
+});
+document.addEventListener('dragstart', e => e.preventDefault());
+
+/* === DATOS === */
+const categories = [
+  {
+    id: 'sonzai',
+    kanji: '存在',
+    romaji: 'Sonzai',
+    name: 'Presencia',
+    statKey: 'statPresence',
+    rituals: [
+      { t: 'Saludo Seiza', d: 'Recibirlo de rodillas en la entrada. Rostro bajo hasta que él autorice el contacto.' },
+      { t: 'Silencio de Espera', d: 'No dirigirte a él hasta que él te hable primero. Mi voz es un regalo que él concede.' },
+      { t: 'Mirada Cautiva', d: 'Mantener los ojos en el suelo en su presencia. Mirarlo directamente solo bajo su mandato.' },
+      { t: 'Posicionamiento Bajo', d: 'Estar siempre físicamente por debajo de su nivel (suelo, pies de la cama o sofá).' },
+      { t: 'Despedida Ritual', d: 'Permanecer en posición de respeto hasta que él desaparezca de la vista al salir de casa.' },
+      { t: 'Sombra Fiel', d: 'Seguir sus pasos en casa a un metro de distancia, siempre atenta a lo que pueda necesitar.' },
+      { t: 'Inmovilidad Impuesta', d: 'Permanecer en la postura que él elija sin moverme hasta que su voluntad dicte lo contrario.' },
+      { t: 'Petición de Paso', d: 'Pedir permiso antes de entrar o salir de cualquier estancia donde él se encuentre.' },
+      { t: 'Escucha de Rodillas', d: 'Si él imparte una enseñanza o corrección, escucharla de rodillas con total atención.' },
+      { t: 'Altar de Orden', d: 'Mantener sus objetos personales limpios y dispuestos como un acto de veneración diaria.' }
+    ]
+  },
+  {
+    id: 'houshi',
+    kanji: '奉仕',
+    romaji: 'Houshi',
+    name: 'Servicio',
+    statKey: 'statService',
+    rituals: [
+      { t: 'Ceremonia de Calzado', d: 'Quitarle y ponerle los zapatos cada vez que entre o salga del hogar.' },
+      { t: 'Servicio de Copa', d: 'Servir cada bebida con ambas manos y cabeza inclinada, esperando su aprobación.' },
+      { t: 'El Baño del Amo', d: 'Enjabonar, lavar y secar su cuerpo en la ducha, enfocada únicamente en su placer.' },
+      { t: 'Masaje de Pies Ritual', d: 'Mínimo 15 minutos de masaje al terminar su jornada para aliviar su cansancio.' },
+      { t: 'Protocolo de Vestidor', d: 'Preparar su ropa diaria según su gusto, asegurando que cada prenda esté impecable.' },
+      { t: 'Menú Devoto', d: 'Cocinar exclusivamente lo que él desee, sirviendo su plato primero y esperando órdenes.' },
+      { t: 'Alimentación Asistida', d: 'Darle de comer en la boca si él así lo requiere, con paciencia y devoción extrema.' },
+      { t: 'Recogida Silenciosa', d: 'Eliminar cualquier rastro de desorden sin que él note mi presencia o esfuerzo.' },
+      { t: 'Preparación de Sueño', d: 'Arreglar la cama y el ambiente antes de que él decida retirarse a descansar.' },
+      { t: 'Reporte de Tareas', d: 'Enviar mensajes informando de las labores cumplidas en casa sin esperar respuesta.' }
+    ]
+  },
+  {
+    id: 'zaisei',
+    kanji: '財政',
+    romaji: 'Zaisei',
+    name: 'Finanzas',
+    statKey: 'statFinance',
+    rituals: [
+      { t: 'Entrega de Tickets', d: 'Presentación física de cada recibo de gasto. Lo haré de rodillas, rindiendo cuentas ante tu autoridad.' },
+      { t: 'Petición de Asignación', d: 'Solicitar fondos para mis necesidades reconociendo tu mando total sobre la administración del hogar.' },
+      { t: 'Registro de Ofrenda', d: 'Notificar cada ingreso recibido para que sea integrado bajo tu supervisión directa.' },
+      { t: 'Tributo por Falta', d: 'Aceptación consciente de una ofrenda económica compensatoria en caso de romper la armonía del pacto.' },
+      { t: 'Informe de Esfuerzo', d: 'Rendir cuentas diarias de mi rendimiento laboral, honrando el sustento que tú me proporcionas.' },
+      { t: 'Veto de Caprichos', d: 'Presentar deseos de compra no esenciales para que tú decidas qué se me permite adquirir.' },
+      { t: 'Transparencia Total', d: 'Acceso de tu parte a mis movimientos económicos para asegurar que nada se oculta a tu mirada.' },
+      { t: 'Ritual de Gratitud', d: 'Al recibir cualquier recurso de tu mano, realizaré una inclinación formal de gratitud profunda.' },
+      { t: 'Custodia de Bienes', d: 'Todo objeto adquirido bajo tu mando será considerado fruto de tu benevolencia y autoridad.' },
+      { t: 'Disciplina Financiera', d: 'Aceptación de recortes en mi asignación si fallo en mis deberes de obediencia o rituales.' }
+    ]
+  },
+  {
+    id: 'karada',
+    kanji: '身体',
+    romaji: 'Karada',
+    name: 'Cuerpo',
+    statKey: 'statBody',
+    rituals: [
+      { t: 'Clímax Bajo Llave', d: 'No tocarme ni buscar placer personal sin tu orden explícita. Mi éxtasis es propiedad tuya.' },
+      { t: 'Marcaje Hanko', d: 'Llevar tus iniciales o firma en mi piel en el lugar que tú decidas marcar hoy.' },
+      { t: 'Uniforme de Propiedad', d: 'Vestir exactamente lo que tú dictes, incluyendo lencería y calzado, sin objeciones.' },
+      { t: 'Disponibilidad Total', d: 'Estar lista para tu contacto físico en el momento y lugar que tu deseo ordene.' },
+      { t: 'Perfume de Dueño', d: 'Usar exclusivamente la fragancia que tú elijas para mi piel, eliminando cualquier rastro propio.' },
+      { t: 'Postura de Exposición', d: 'Mantener posturas que resalten mi entrega mientras tú trabajas o descansas en el hogar.' },
+      { t: 'Control de Estética', d: 'Mantenimiento estético estricto bajo tus estándares de suavidad, vello y cuidado.' },
+      { t: 'Joyería de Vínculo', d: 'Llevar un accesorio cerrado que simbolice mi pertenencia indisoluble a ti.' },
+      { t: 'Privación de Voz', d: 'Uso de elementos de silencio cuando tú desees que mi única comunicación sea la obediencia corporal.' },
+      { t: 'Pruebas de Temple', d: 'Sostener una posición determinada por el tiempo que tu juicio decida oportuno.' }
+    ]
+  }
+];
+
+/* === ESTADO === */
+const todayKey = new Date().toDateString();
+let honored = JSON.parse(localStorage.getItem('shihai_honored') || '{}');
+if (honored.date !== todayKey) {
+  honored = { date: todayKey, items: {} };
+  localStorage.setItem('shihai_honored', JSON.stringify(honored));
+}
+
+/* === SHEETS SYNC === */
+const SHEET_URL_KEY = 'shihai_sheetUrl';
+const DEVICE_KEY = 'shihai_device';
+const QUEUE_KEY = 'shihai_queue';
+const DEFAULT_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxKSQtv3WbbimTcQQFX5y8UZWrgmcDxzOufrC3smj2bGcYJjUUI7u5uwUZPrMzc2xQp/exec';
+let sheetUrl = localStorage.getItem(SHEET_URL_KEY) || DEFAULT_SHEET_URL;
+let deviceName = localStorage.getItem(DEVICE_KEY) || 'dispositivo';
+let pendingQueue = JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]');
+let syncing = false;
+if (!localStorage.getItem(SHEET_URL_KEY)) localStorage.setItem(SHEET_URL_KEY, DEFAULT_SHEET_URL);
+
+/* === RENDER === */
+const $menuGrid = document.getElementById('menuGrid');
+
+function renderCategories() {
+  $menuGrid.innerHTML = '';
+  categories.forEach((cat, ci) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'category';
+    wrap.dataset.cat = cat.id;
+
+    const btn = document.createElement('button');
+    btn.className = 'category-btn';
+    btn.innerHTML = `
+      <div class="cat-kanji">${cat.kanji}</div>
+      <div class="cat-text">
+        <div class="cat-romaji">${cat.romaji}</div>
+        <div class="cat-name">${cat.name}</div>
+      </div>
+      <div class="cat-count">${cat.rituals.length}</div>
+      <div class="cat-arrow">▼</div>
+    `;
+    btn.addEventListener('click', () => toggleCategory(wrap));
+
+    const list = document.createElement('div');
+    list.className = 'ritual-list';
+
+    cat.rituals.forEach((r, ri) => {
+      const id = `${cat.id}-${ri}`;
+      const isHonored = honored.items[id];
+      const ritual = document.createElement('div');
+      ritual.className = 'ritual' + (isHonored ? ' honored' : '');
+      ritual.dataset.id = id;
+      ritual.dataset.search = (r.t + ' ' + r.d).toLowerCase();
+      ritual.innerHTML = `
+        <div class="ritual-num">${ri + 1}</div>
+        <div class="ritual-content">
+          <div class="ritual-title">${r.t}</div>
+          <div class="ritual-desc">« ${r.d} »</div>
+        </div>
+        <button class="check" title="Marcar como honrado">✓</button>
+      `;
+      ritual.querySelector('.check').addEventListener('click', e => {
+        e.stopPropagation();
+        toggleHonored(id, ritual);
+      });
+      list.appendChild(ritual);
+    });
+
+    wrap.appendChild(btn);
+    wrap.appendChild(list);
+    $menuGrid.appendChild(wrap);
+  });
+  updateStats();
+}
+
+function toggleCategory(wrap) {
+  const wasOpen = wrap.classList.contains('open');
+  document.querySelectorAll('.category').forEach(c => c.classList.remove('open'));
+  if (!wasOpen) wrap.classList.add('open');
+}
+
+function toggleHonored(id, ritual) {
+  const wasHonored = !!honored.items[id];
+  if (wasHonored) {
+    delete honored.items[id];
+    ritual.classList.remove('honored');
+  } else {
+    honored.items[id] = Date.now();
+    ritual.classList.add('honored');
+  }
+  localStorage.setItem('shihai_honored', JSON.stringify(honored));
+  updateStats();
+
+  // Sincronizar con Sheets
+  if (sheetUrl) {
+    const [catId, ritualIdx] = id.split('-');
+    const cat = categories.find(c => c.id === catId);
+    if (cat) {
+      const ritualData = cat.rituals[parseInt(ritualIdx)];
+      queueAction({
+        tipo: 'shihai',
+        accion: wasHonored ? 'desmarcar' : 'marcar',
+        categoria: cat.id,
+        categoriaNombre: cat.name,
+        ritualId: id,
+        ritualNombre: ritualData ? ritualData.t : '',
+        dispositivo: deviceName
+      });
+      flushQueue();
+    }
+  }
+}
+
+function updateStats() {
+  let total = 0;
+  const counts = { sonzai: 0, houshi: 0, zaisei: 0, karada: 0 };
+  Object.keys(honored.items).forEach(id => {
+    const cat = id.split('-')[0];
+    if (counts[cat] !== undefined) counts[cat]++;
+    total++;
+  });
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statPresence').textContent = counts.sonzai;
+  document.getElementById('statService').textContent = counts.houshi;
+  document.getElementById('statBody').textContent = counts.karada;
+}
+
+/* === BÚSQUEDA === */
+const $search = document.getElementById('search');
+const $noResults = document.getElementById('noResults');
+
+$search.addEventListener('input', () => {
+  const q = $search.value.trim().toLowerCase();
+  if (!q) {
+    document.querySelectorAll('.ritual').forEach(r => r.classList.remove('hidden-by-search'));
+    document.querySelectorAll('.category').forEach(c => c.style.display = '');
+    $noResults.classList.remove('show');
+    return;
+  }
+  let foundAny = false;
+  document.querySelectorAll('.category').forEach(cat => {
+    let catFound = false;
+    cat.querySelectorAll('.ritual').forEach(r => {
+      const matches = r.dataset.search.includes(q);
+      r.classList.toggle('hidden-by-search', !matches);
+      if (matches) catFound = true;
+    });
+    cat.style.display = catFound ? '' : 'none';
+    if (catFound) {
+      cat.classList.add('open');
+      foundAny = true;
+    }
+  });
+  $noResults.classList.toggle('show', !foundAny);
+});
+
+/* === RITUAL DEL DÍA === */
+function setDailyRitual() {
+  const day = new Date().getDay();
+  const cat = categories[day % categories.length];
+  const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  const ritual = cat.rituals[dayOfYear % cat.rituals.length];
+  document.getElementById('dailyName').textContent = `${cat.kanji} · ${ritual.t}`;
+  document.getElementById('dailyText').textContent = `« ${ritual.d} »`;
+}
+
+/* === RESET === */
+document.getElementById('btnReset').addEventListener('click', () => {
+  if (!confirm('¿Reiniciar el registro del día?')) return;
+  honored = { date: todayKey, items: {} };
+  localStorage.setItem('shihai_honored', JSON.stringify(honored));
+  document.querySelectorAll('.ritual').forEach(r => r.classList.remove('honored'));
+  updateStats();
+});
+
+/* === PARTÍCULAS === */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resizeCanvas() { canvas.width = innerWidth; canvas.height = innerHeight; }
+function createParticles() {
+  particles = [];
+  const count = innerWidth < 600 ? 18 : 32;
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.3,
+      vy: Math.random() * 0.3 + 0.08,
+      vx: (Math.random() - 0.5) * 0.1,
+      opacity: Math.random() * 0.5 + 0.1
+    });
+  }
+}
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(212,175,55,${p.opacity})`;
+    ctx.fill();
+    p.y += p.vy; p.x += p.vx;
+    if (p.y > canvas.height + 10) { p.y = -10; p.x = Math.random() * canvas.width; }
+  });
+  requestAnimationFrame(animate);
+}
+resizeCanvas(); createParticles(); animate();
+window.addEventListener('resize', () => { resizeCanvas(); createParticles(); });
+
+/* INIT */
+renderCategories();
+setDailyRitual();
+
+/* === SINCRONIZACIÓN SHEETS === */
+const $btnConfig = document.getElementById('btnConfig');
+const $modal = document.getElementById('configModal');
+const $sheetUrlInput = document.getElementById('sheetUrl');
+const $deviceNameInput = document.getElementById('deviceName');
+const $rachasPanel = document.getElementById('rachasPanel');
+const $toast = document.getElementById('toast');
+
+function showToast(text, type) {
+  $toast.textContent = text;
+  $toast.className = 'toast' + (type === 'error' ? ' error' : '');
+  $toast.classList.add('show');
+  setTimeout(() => $toast.classList.remove('show'), 2800);
+}
+
+function updateConnectionUI() {
+  if (sheetUrl) {
+    $btnConfig.classList.add('synced');
+    $rachasPanel.style.display = 'block';
+  } else {
+    $btnConfig.classList.remove('synced');
+    $rachasPanel.style.display = 'none';
+  }
+}
+
+$btnConfig.addEventListener('click', () => {
+  $sheetUrlInput.value = sheetUrl;
+  $deviceNameInput.value = deviceName !== 'dispositivo' ? deviceName : '';
+  $modal.classList.add('show');
+});
+
+document.getElementById('btnCancelConfig').addEventListener('click', () => {
+  $modal.classList.remove('show');
+});
+
+document.getElementById('btnSaveConfig').addEventListener('click', async () => {
+  const url = $sheetUrlInput.value.trim();
+  const name = $deviceNameInput.value.trim() || 'dispositivo';
+  if (!url || !url.includes('script.google.com')) {
+    alert('Pega una URL válida del Apps Script.');
+    return;
+  }
+  sheetUrl = url;
+  deviceName = name;
+  localStorage.setItem(SHEET_URL_KEY, url);
+  localStorage.setItem(DEVICE_KEY, name);
+  $modal.classList.remove('show');
+  showToast('Conectando...');
+  await fetchRemote();
+  flushQueue();
+});
+
+async function fetchRemote() {
+  if (!sheetUrl) return;
+  try {
+    const res = await fetch(sheetUrl + '?tipo=shihai', { method: 'GET' });
+    const data = await res.json();
+    if (!data.ok) { showToast('Error de conexión', 'error'); return; }
+
+    // Actualizar rachas
+    const cats = data.categorias || {};
+    const map = {
+      'Presencia': ['rachaPresencia', 'rachaMaxPresencia'],
+      'Servicio': ['rachaServicio', 'rachaMaxServicio'],
+      'Finanzas': ['rachaFinanzas', 'rachaMaxFinanzas'],
+      'Cuerpo': ['rachaCuerpo', 'rachaMaxCuerpo']
+    };
+    Object.keys(map).forEach(catName => {
+      const c = cats[catName];
+      const [rId, rmId] = map[catName];
+      if (c) {
+        document.getElementById(rId).textContent = c.racha || 0;
+        document.getElementById(rmId).textContent = `máx ${c.rachaMax || 0}`;
+      }
+    });
+
+    // Sincronizar items honrados de hoy desde el servidor
+    const remoteToday = data.itemsHoy || {};
+    const localItems = honored.items;
+    // Si el día cambió o si remote tiene items que local no tiene, fusionar
+    Object.keys(remoteToday).forEach(id => {
+      if (!localItems[id]) {
+        localItems[id] = Date.now();
+        const el = document.querySelector(`.ritual[data-id="${id}"]`);
+        if (el) el.classList.add('honored');
+      }
+    });
+    localStorage.setItem('shihai_honored', JSON.stringify(honored));
+    updateStats();
+    updateConnectionUI();
+    showToast('Sincronizado');
+  } catch (err) {
+    console.error(err);
+    showToast('Error de conexión', 'error');
+  }
+}
+
+async function sendToSheet(payload) {
+  if (!sheetUrl) return false;
+  try {
+    const res = await fetch(sheetUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+      redirect: 'follow'
+    });
+    const data = await res.json();
+    if (data.ok && data.categorias) {
+      // Actualizar rachas en pantalla
+      const cats = data.categorias;
+      const map = {
+        'Presencia': ['rachaPresencia', 'rachaMaxPresencia'],
+        'Servicio': ['rachaServicio', 'rachaMaxServicio'],
+        'Finanzas': ['rachaFinanzas', 'rachaMaxFinanzas'],
+        'Cuerpo': ['rachaCuerpo', 'rachaMaxCuerpo']
+      };
+      Object.keys(map).forEach(catName => {
+        const c = cats[catName];
+        const [rId, rmId] = map[catName];
+        if (c) {
+          document.getElementById(rId).textContent = c.racha || 0;
+          document.getElementById(rmId).textContent = `máx ${c.rachaMax || 0}`;
+        }
+      });
+    }
+    return data.ok === true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function queueAction(payload) {
+  pendingQueue.push({ ...payload, ts: Date.now() });
+  localStorage.setItem(QUEUE_KEY, JSON.stringify(pendingQueue));
+}
+
+async function flushQueue() {
+  if (syncing || !sheetUrl || pendingQueue.length === 0) return;
+  syncing = true;
+  while (pendingQueue.length > 0) {
+    const item = pendingQueue[0];
+    const ok = await sendToSheet(item);
+    if (ok) {
+      pendingQueue.shift();
+      localStorage.setItem(QUEUE_KEY, JSON.stringify(pendingQueue));
+    } else {
+      syncing = false;
+      return;
+    }
+  }
+  syncing = false;
+}
+
+window.addEventListener('online', flushQueue);
+updateConnectionUI();
+if (sheetUrl) { fetchRemote(); flushQueue(); }
+</script>
+</body>
+</html>
